@@ -1,0 +1,164 @@
+
+
+{
+    "imageURL": "img/player.png",
+    "frames": [
+        {
+            "name": "idle",
+            "rect": [
+                10,
+                10,
+                16,
+                28
+            ]
+        },
+
+        {
+            "name": "walk-down-1",
+            "rect": [
+                10,
+                10,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-down-2",
+            "rect": [
+                10,
+                50,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-down-3",
+            "rect": [
+                10,
+                90,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-down-4",
+            "rect": [
+                10,
+                130,
+                16,
+                28
+            ]
+        },
+
+        {
+            "name": "walk-left-1",
+            "rect": [
+                40,
+                10,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-left-2",
+            "rect": [
+                40,
+                50,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-left-3",
+            "rect": [
+                40,
+                90,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-left-4",
+            "rect": [
+                40,
+                130,
+                16,
+                28
+            ]
+        },
+
+        {
+            "name": "walk-up-1",
+            "rect": [
+                70,
+                10,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-up-2",
+            "rect": [
+                70,
+                50,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-up-3",
+            "rect": [
+                70,
+                90,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-up-4",
+            "rect": [
+                70,
+                130,
+                16,
+                28
+            ]
+        },
+
+        {
+            "name": "walk-right-1",
+            "rect": [
+                100,
+                10,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-right-2",
+            "rect": [
+                100,
+                50,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-right-3",
+            "rect": [
+                100,
+                90,
+                16,
+                28
+            ]
+        },
+        {
+            "name": "walk-right-4",
+            "rect": [
+                100,
+                130,
+                16,
+                28
+            ]
+        }
+    ]
+}

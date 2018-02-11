@@ -1,0 +1,23 @@
+{
+    "imageURL": "img/world.png",
+    "frames": [
+        {
+            "name": "grass",
+            "rect": [
+                0,
+                0,
+                32,
+                32
+            ]
+        },
+        {
+            "name": "tree",
+            "rect": [
+                32,
+                0,
+                64,
+                32
+            ]
+        }
+    ]
+}
