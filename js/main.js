@@ -4,6 +4,7 @@ import createPlayer from './player.js';
 import Timer from './Timer.js';
 import Camera from './Camera.js';
 import GUI from './GUI.js';
+import { loadItemSprites } from './itemSprites.js';
 
 window.onload   = () => {
 
@@ -14,10 +15,11 @@ window.onload   = () => {
     const camera    = new Camera(screen.width, screen.height);
     
     Promise.all([
-        createPlayer( screen ),
-        createWorld( screen )  
+        createPlayer(screen),
+        createWorld(screen),
+        loadItemSprites(screen.width)
     ])
-    .then( ([ player, world ]) => {
+    .then( ([ player, world, itemSprites ]) => {
         
         window.player = player;
         world.addEntity( player );

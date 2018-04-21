@@ -18,7 +18,7 @@ function loadJSON(url) {
 }
 
 
-export function loadSpriteSheet(name) {
+export function loadSpriteSheet(name, sizeMultiplier = 1) {
     return loadJSON(`sprites/${name}.json`)
         .then(sheetSpec => Promise.all([
             sheetSpec,
@@ -33,13 +33,19 @@ export function loadSpriteSheet(name) {
                 sheetSpec.tiles.forEach(tileSpec => {
                     sprites.defineTile(tileSpec.name,
                         tileSpec.index[0],
-                        tileSpec.index[1]);
+                        tileSpec.index[1],
+                        sizeMultiplier);
                 });
             }
 
             if (sheetSpec.frames) {
                 sheetSpec.frames.forEach(frameSpec => {
-                    sprites.define(frameSpec.name, ...frameSpec.rect);
+                    sprites.define(
+                        frameSpec.name, 
+                        ...frameSpec.rect, 
+                        frameSpec.rect[2] * sizeMultiplier,
+                        frameSpec.rect[3] * sizeMultiplier
+                    );
                 })
             }
 

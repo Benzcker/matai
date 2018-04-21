@@ -3,6 +3,9 @@ import { Vec2, Matrix } from "../math.js";
 import Apfel from "../Items/Apfel.js";
 import Stab from "../Items/Stab.js";
 
+export function getSlotPixelSize(screen_width) {
+    return Math.ceil(screen_width * 0.08); //0.063
+}
 export default class Inventory extends Trait {
     constructor( screen, itemSprite ) {
         super('inventory');
@@ -20,9 +23,10 @@ export default class Inventory extends Trait {
         this.pos      = new Vec2( screen.width * 0.05, screen.height * 0.05);
         this.screen_size     = new Vec2( screen.width * 0.9, screen.height * 0.9);
         
+        this.slot_pixel_size = getSlotPixelSize(screen.width);
+
         this.slotStart = new Vec2(this.screen_size.x * 0.3, this.screen_size.y * 0.2);
         this.slotStart.add(this.pos);
-        this.slot_pixel = this.screen_size.x * 0.07;
 
         for(let i = 0; i < 10; ++i) {
             const x = Math.floor(Math.random()*this.size.x);
@@ -55,24 +59,7 @@ export default class Inventory extends Trait {
 
     addItem( item, invent_x, invent_y ) {
         if (this.list.includes(item)) return false;
-        
-        // let blocked = item.parts.some(part => {
-            
-        //     if (!part) return false;
-        //     const finalX = invent_x + part.pos.x;
-        //     const finalY = invent_y + part.pos.y;
-        //     console.log(this.list.get(finalX, finalY));
-        //     console.log(finalY);
-            
-        //     if (
-        //         finalX >= this.size.x ||
-        //         finalY >= this.size.y ||
-        //         this.list.get(finalX, finalY)
-        //     ) {
-        //         console.log("blocked");
-        //         return true;
-        //     }
-        // });
+
         let blocked = false;
         item.parts.forEach((part, x, y) => {
             const finalX = invent_x + x;
@@ -115,8 +102,8 @@ export default class Inventory extends Trait {
             this.slots.forEach( (slot, ind) => {
                 context.fillRect( 
                     this.pos.x + 50, 
-                    this.middle.y + 70 * (ind-this.slots.length/2), 
-                    this.slot_pixel, this.slot_pixel);
+                    this.middle.y + (this.slot_pixel_size + 5) * (ind-this.slots.length/2), 
+                    this.slot_pixel_size, this.slot_pixel_size);
             });
             
             // Item Slots
@@ -127,22 +114,32 @@ export default class Inventory extends Trait {
                     context.fillRect(
                         slotCoords.x,
                         slotCoords.y,
-                        this.slot_pixel, this.slot_pixel);
+                        this.slot_pixel_size, this.slot_pixel_size);
                 } 
             }
 
             // Items
-            context.fillStyle = 'black';
-            context.font = Math.ceil(this.slot_pixel * 0.2) + 'px Arial';
+            context.font = Math.ceil(this.slot_pixel_size * 0.2) + 'px Arial';
             context.textAlign = 'center';
             context.textBaseline = 'middle';
             this.list.forEach((elem, x, y) => {
-                if (elem.pos.x + elem.pos.y !== 0) return;
                 const slotCoords = this.getSlotCoords(x, y);
-                elem.item.draw(context, 
-                    slotCoords.x + this.slot_pixel/2, 
-                    slotCoords.y + this.slot_pixel * 0.9
-                );
+                if (elem.pos.x + elem.pos.y === 0) {
+                    elem.item.draw(context, 
+                        slotCoords.x, slotCoords.y
+                    );
+                }
+                if (elem.labeled) {
+                    // elem.item.drawName(context, this.slot_pixel_size, this.getSlotCoords, this);
+                    elem.item.drawName(context, 
+                        slotCoords.x + this.slot_pixel_size / 2,
+                        slotCoords.y + this.slot_pixel_size * 0.94,
+                        this.slot_pixel_size * 0.8,
+                        this.slot_pixel_size * 0.22
+                    );
+                }
+
+
             });
         }
 
@@ -157,10 +154,10 @@ export default class Inventory extends Trait {
         return tempW;
     }
 
-    getSlotCoords(x ,y) {
+    getSlotCoords(x ,y, inventory = this) {
         return new Vec2(
-            this.slotStart.x + x * (this.slot_pixel + 5),
-            this.slotStart.y + y * (this.slot_pixel + 5)
+            inventory.slotStart.x + x * (inventory.slot_pixel_size + 5),
+            inventory.slotStart.y + y * (inventory.slot_pixel_size + 5)
         );
     }
 

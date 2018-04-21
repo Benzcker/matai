@@ -2,7 +2,7 @@
     "imageURL": "img/items.png",
     "frames": [
         {
-            "name": "apple",
+            "name": "apfel",
             "rect": [
                 0,
                 0,
