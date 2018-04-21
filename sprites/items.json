@@ -1,0 +1,23 @@
+{
+    "imageURL": "img/items.png",
+    "frames": [
+        {
+            "name": "apple",
+            "rect": [
+                0,
+                0,
+                64,
+                64
+            ]
+        },
+        {
+            "name": "stab",
+            "rect": [
+                64,
+                0,
+                64,
+                192
+            ]
+        }
+    ]
+}

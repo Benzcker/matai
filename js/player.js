@@ -5,17 +5,21 @@ import { loadSpriteSheet } from './loaders.js';
 import { createAnim } from "./anim.js";
 
 export default function createPlayer( screen ) {
-    return loadSpriteSheet('player')
-    .then(sprite => {
+    return Promise.all([
+        loadSpriteSheet('player'),
+        loadSpriteSheet('items')
+    ])
+    .then( ([playerSprite, itemSprite]) => {
         const player    = new Entity('Player');
         
+
         player.pos.set(0, 0);
         player.size.set(12, 12);
         player.height       = 16;
         player.imageXOff    = 2;
         
         player.addTrait( new Walk() );
-        player.addTrait( new Inventory( screen ) );
+        player.addTrait( new Inventory( screen, itemSprite ) );
 
         
         const frameLen = 18;
@@ -70,7 +74,7 @@ export default function createPlayer( screen ) {
             //     player.pos.x - camera.pos.x, player.pos.y - camera.pos.y,
             //     player.size.x, player.size.y
             // );
-            sprite.draw(routeFrame(this), context, player.pos.x - camera.pos.x - player.imageXOff, player.pos.y - camera.pos.y - player.height, false);
+            playerSprite.draw(routeFrame(this), context, player.pos.x - camera.pos.x - player.imageXOff, player.pos.y - camera.pos.y - player.height, false);
         }
         
         return player;

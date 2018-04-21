@@ -37,6 +37,15 @@ export class Matrix {
             this.size.x < x ? x : this.size.x,
             this.size.y < y ? y : this.size.y
         );
+        
+    }
+
+    includes(value) {
+        return this.grid.includes(value);
+    }
+
+    some(callback) {
+        this.grid.some(callback);
     }
 
 }
