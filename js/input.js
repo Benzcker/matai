@@ -1,4 +1,5 @@
 import Keyboard from './KeyboardState.js';
+import { Vec2 } from './math.js';
 
 
 export function setupKeyboard( player, timer ) {
@@ -53,4 +54,43 @@ export function setupKeyboard( player, timer ) {
     });
 
     return input;
+}
+
+
+export class MouseHandler {
+    constructor() {
+        this.events = new Map();
+        this.player = undefined;
+    }
+
+    handleEvent(type, event) {
+        event.preventDefault();
+        // console.log(this.getMousePos(event));
+        // chatlog(this.getMousePos(event).toString());
+        const mousePos = this.getMousePos(event);
+        if (this.player && this.player.inventory.open) this.player.inventory.click(mousePos);
+    }
+
+    listenTo(screen, context) {
+        ['mousedown', 'mouseup'].forEach(eventName => {
+            screen.addEventListener(eventName, event => {
+                this.handleEvent(eventName, event);
+            });
+        });
+        
+        this.getMousePos = function (event) {
+            const   bounding = screen.getBoundingClientRect(),
+                    scaleX   = screen.width  / bounding.width,
+                    scaleY   = screen.height / bounding.height;
+            return new Vec2(
+                (event.clientX - bounding.left) * scaleX,
+                (event.clientY - bounding.top ) * scaleY
+            );
+        }
+    }
+
+    setPlayer( player ) {
+        this.player     = player;
+    }
+
 }

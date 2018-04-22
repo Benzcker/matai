@@ -31,14 +31,7 @@ export default class Item {
         itemSprites.draw(this.id, context, x, y);
     }
     
-    // drawName( context, slot_pixel_size, getSlotCoords, inv ) {
     drawName( context, c_x, c_y, w, h ) {
-        // c_x und c_y sind center
-        // const slotCoords = getSlotCoords(this.labeledPart.pos.x, this.labeledPart.pos.y, inv);
-        // const   c_x = slotCoords.x + slot_pixel_size / 2,
-        //         c_y = slotCoords.y + slot_pixel_size * 0.94,
-        //         w   = slot_pixel_size * 0.8, 
-        //         h   = slot_pixel_size * 0.22
         context.fillStyle = '#CDCDCD';
         context.fillRect(c_x - w / 2, c_y - h / 2, w, h);
         context.fillStyle = 'black';

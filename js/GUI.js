@@ -40,8 +40,10 @@ export default class GUI {
 
     }
 
-    addMessage( text ) {
-        this.messages.push( new Message(text) );
+    createAddMessage( gui ) {
+        return function addMessage( text ) {
+            gui.messages.push( new Message(text) );
+        }
     }
 
     

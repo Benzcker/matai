@@ -44,9 +44,10 @@ export class Matrix {
         return this.grid.includes(value);
     }
 
-    some(callback) {
-        this.grid.some(callback);
-    }
+    //  Funktioniert noch nicht! 
+    // some(callback) {
+    //     this.grid.some(column => {return column.some(callback);});
+    // }
 
 }
 
@@ -54,25 +55,29 @@ export class Vec2 {
     constructor(x = 0, y = 0) {
         this.set(x, y);
     }
-
+    
+    toString() {
+        return "{ x: " + cutFloat(this.x, 2) + ", y: " + cutFloat(this.y, 2) + " }";
+    }
+    
     get angle() {
         return Math.atan2(this.y, this.x) + Math.PI;
     }
-
+    
     get magnitude() {
         return Math.sqrt(this.x**2 + this.y**2);
     }
-
+    
     constrainMag(maxNum) {
         if (this.magnitude > maxNum) {
             this.setMag( maxNum );
         }
     }
-
+    
     setMag(magnitude) {
         this.multNum(magnitude / this.magnitude)
     }
-
+    
     equals(vec2) {
         return vec2 && this.x === vec2.x && this.y === vec2.y;
     }
@@ -81,25 +86,29 @@ export class Vec2 {
         this.x = x;
         this.y = y;
     }
-
+    
     add(vec2) {
         this.x += vec2.x;
         this.y += vec2.y;
     }
-
+    
     addNum(num) {
         this.x += num;
         this.y += num;
     }
-
-
+    
+    
     mult(vec2) {
         this.x *= vec2.x;
         this.y *= vec2.y;
     }
-
+    
     multNum(num) {
         this.x *= num;
         this.y *= num;
     }
+}
+
+export function cutFloat(num, len) {
+    return Math.round(num * 10**len) / 10**len;
 }

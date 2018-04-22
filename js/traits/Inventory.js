@@ -161,6 +161,12 @@ export default class Inventory extends Trait {
         );
     }
 
+    click(coords) {
+
+        chatlog(coords.toString());
+
+    }
+
 }
 
 class Slot {
