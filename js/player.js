@@ -6,7 +6,7 @@ import { createAnim } from "./anim.js";
 
 export default function createPlayer( screen ) {
     return loadSpriteSheet('player')
-    .then(sprite => {
+    .then(playerSprite => {
         const player    = new Entity('Player');
         
         player.pos.set(0, 0);
@@ -60,8 +60,6 @@ export default function createPlayer( screen ) {
                     // Eigentlich unnötig
                     return 'idle';
             }
-
-
         }
 
         player.draw     = function drawPlayer( context, camera ) {
@@ -70,7 +68,7 @@ export default function createPlayer( screen ) {
             //     player.pos.x - camera.pos.x, player.pos.y - camera.pos.y,
             //     player.size.x, player.size.y
             // );
-            sprite.draw(routeFrame(this), context, player.pos.x - camera.pos.x - player.imageXOff, player.pos.y - camera.pos.y - player.height, false);
+            playerSprite.draw(routeFrame(this), context, player.pos.x - camera.pos.x - player.imageXOff, player.pos.y - camera.pos.y - player.height, false);
         }
         
         return player;
