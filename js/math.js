@@ -44,6 +44,26 @@ export class Matrix {
         return this.grid.includes(value);
     }
 
+    remove(value) {
+        for (const column of this.grid) {
+            if (!column) continue;
+            const ind = column.indexOf(value);
+            if (ind !== -1) {
+                column.splice(ind, 1);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    filter(callback) {
+        let filteredList = [];
+        this.grid.forEach(column => {
+            filteredList = filteredList.concat(column.filter(callback));
+        });
+        return filteredList;
+    }
+
     //  Funktioniert noch nicht! 
     // some(callback) {
     //     this.grid.some(column => {return column.some(callback);});

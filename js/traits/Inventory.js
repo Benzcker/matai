@@ -12,9 +12,10 @@ export default class Inventory extends Trait {
 
         this.itemSprite = itemSprite;
         
-        this.list   = new Matrix();
         this.open   = false;
-        this.slots  = new Array(4);
+        this.list   = new Matrix();
+        this.mouseItem = undefined;
+        this.mousePos = new Vec2();
 
         this.maxWeight  = 30;
         this.size       = new Vec2(5, 4);
@@ -38,19 +39,17 @@ export default class Inventory extends Trait {
             }
         }
 
-        this.slots[0]   = new Slot();
-        this.slots[1]   = new Slot();
-        this.slots[2]   = new Slot();
-        this.slots[3]   = new Slot();
     }
 
     update( entity, deltaTime ) {
         if ( !this.open ) return
 
         // this.list = this.list.filter(item => item.update(deltaTime));
-        this.list.forEach(part => part.item.wasUpdated = false);
         this.list.forEach(part => {
-            if (!part.item.wasUpdated) {
+            if(part) part.item.wasUpdated = false;
+        });
+        this.list.forEach(part => {
+            if (part && !part.item.wasUpdated) {
                 part.item.update(deltaTime);
                 part.item.wasUpdated = true;
             }
@@ -66,7 +65,9 @@ export default class Inventory extends Trait {
             const finalY = invent_y + y;
             if(
                 finalX >= this.size.x ||
-                finalY >= this.size.y ||
+                finalY >= this.size.y || 
+                finalX < 0 ||
+                finalY < 0 ||
                 this.list.get(finalX, finalY)
             ) {
                 blocked = true;
@@ -98,13 +99,6 @@ export default class Inventory extends Trait {
             // draw player sprite
 
             // Rüstungs Slots
-            context.fillStyle = '#878787';
-            this.slots.forEach( (slot, ind) => {
-                context.fillRect( 
-                    this.pos.x + 50, 
-                    this.middle.y + (this.slot_pixel_size + 5) * (ind-this.slots.length/2), 
-                    this.slot_pixel_size, this.slot_pixel_size);
-            });
             
             // Item Slots
             context.fillStyle = '#878787';
@@ -123,6 +117,7 @@ export default class Inventory extends Trait {
             context.textAlign = 'center';
             context.textBaseline = 'middle';
             this.list.forEach((elem, x, y) => {
+                if (!elem) return
                 const slotCoords = this.getSlotCoords(x, y);
                 if (elem.pos.x + elem.pos.y === 0) {
                     elem.item.draw(context, 
@@ -138,9 +133,15 @@ export default class Inventory extends Trait {
                         this.slot_pixel_size * 0.22
                     );
                 }
-
-
             });
+
+            // Mouse Item
+            if (this.mouseItem) {
+                this.mouseItem.item.draw(context, 
+                    this.mousePos.x - this.mouseItem.pos.x * this.slot_pixel_size - this.slot_pixel_size / 2, 
+                    this.mousePos.y - this.mouseItem.pos.y * this.slot_pixel_size - this.slot_pixel_size / 2
+                );
+            }
         }
 
     }
@@ -163,14 +164,38 @@ export default class Inventory extends Trait {
 
     click(coords) {
 
-        chatlog(coords.toString());
-
+        const invCoords = new Vec2(
+            Math.floor((coords.x - this.slotStart.x) / this.slot_pixel_size),
+            Math.floor((coords.y - this.slotStart.y) / this.slot_pixel_size)
+        );
+        const clickedPart = this.list.get(invCoords.x, invCoords.y);
+        if (!clickedPart && this.mouseItem) {
+            // Auf nichts geklickt mit Item in der Maus
+            const itemStored = this.addItem(this.mouseItem.item, 
+                invCoords.x - this.mouseItem.pos.x,
+                invCoords.y - this.mouseItem.pos.y
+            );
+            if (itemStored) this.mouseItem = undefined;
+            return
+        } else if(clickedPart && this.mouseItem) {
+            // Hier später Itemtausch {x: x, y: y} = {x: y, y: x}
+            return
+        } else if (!clickedPart) return
+        chatlog(clickedPart.item.name);
+        // Item wurde hochgenommen (von Inventar in Maus)
+        const itemParts = this.list.filter(part => part && part.item == clickedPart.item);
+        const newCoords = new Vec2(
+            invCoords.x - clickedPart.pos.x,
+            invCoords.y - clickedPart.pos.y
+        );
+        for (const part of itemParts) {
+            // this.list.remove(part);
+            this.list.set(
+                newCoords.x + part.pos.x, newCoords.y + part.pos.y,
+                undefined
+            );
+        }
+        this.mouseItem = clickedPart;
     }
 
-}
-
-class Slot {
-    constructor( item ) {
-        this.item   = item;
-    }
 }

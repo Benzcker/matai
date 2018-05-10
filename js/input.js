@@ -65,14 +65,17 @@ export class MouseHandler {
 
     handleEvent(type, event) {
         event.preventDefault();
-        // console.log(this.getMousePos(event));
-        // chatlog(this.getMousePos(event).toString());
         const mousePos = this.getMousePos(event);
-        if (this.player && this.player.inventory.open) this.player.inventory.click(mousePos);
+        if (this.player && this.player.inventory.open && event.type == 'mouseup') {
+            this.player.inventory.click(mousePos);
+            this.player.inventory.mousePos.set(mousePos.x, mousePos.y);
+        }
+        if (this.player && this.player.inventory.mouseItem && event.type == 'mousemove') this.player.inventory.mousePos.set(mousePos.x, mousePos.y);
+
     }
 
     listenTo(screen, context) {
-        ['mousedown', 'mouseup'].forEach(eventName => {
+        ['mousedown', 'mouseup', 'mousemove'].forEach(eventName => {
             screen.addEventListener(eventName, event => {
                 this.handleEvent(eventName, event);
             });

@@ -27,6 +27,8 @@ export default class GUI {
                 drawnMsgCount++;
                 context.fillStyle = '#8A8A8A';
                 context.fillRect(7, 6 + screen.height - 24 * drawnMsgCount - 24, 300, 26);
+                context.textAlign = 'left';
+                context.textBaseline = 'bottom';
                 context.fillStyle = 'black';
                 context.fillText(this.messages[i].text, 7, 7 + screen.height - 24*drawnMsgCount);
             }
